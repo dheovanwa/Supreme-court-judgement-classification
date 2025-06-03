@@ -4,10 +4,6 @@ scikit-learn
 beautifulsoup4
 nltk
 openai
-dotenv
-logging
-time
-re
 imblearn
 sklearn
 joblib
