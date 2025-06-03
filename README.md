@@ -44,7 +44,7 @@ pip install -r requirements.txt
 # Run the Streamlit app
 streamlit run app.py
 ```
-You can also access the deployed Streamlit application here: [Supreme Court Judgment Prediction](https://github.com/dheovanwa/Supreme-court-judgement-classification/blob/d0f4191e77630b5de487b2bb3e1fc56705edd50b/app.py)
+You can also access the deployed Streamlit application here: [Supreme Court Judgment Prediction](https://supreme-court-judgement-classification.streamlit.app/)
 
 ### Conclusion
 The project succesfully developed a Machine Learning model to predict the Judgement of the Supreme Court with a quite reasonable accuracy.
