@@ -78,3 +78,7 @@ To understand the distribution of the target variable (```first_party_winner```)
 ![image](https://github.com/user-attachments/assets/7d20115c-7151-4115-ba77-79584237fa59)
 
 This was then visualized using a bar plot for easy comparison. This plot helps us understand the distribution in the target variable, which is important for model training.
+The bar for ```True``` is significantly longer, indicating a much higher number of cases. On the other hand, the bar for ```False``` is notably shorter, indicating a lower number of cases.
+Implication of this distribution:
+- Imbalanced Dataset, the most apparent observation is the significant class imbalance. The number of cases where ```first_party_winner``` is ```True``` is nearly double that of cases where ```first_party_winner``` is ```False```
+- Potential Issues for the Machine Learning model, this class imbalance is a critical factor to consider in machine Learning. If left unaddressed, the classification model might become biased towards predicting the majority class (```True```) because the model will "learn" that predicting ```True``` more often leads to higher overall accuracy, even if it means neglecting or misclassifyng the minority class (```False```)
