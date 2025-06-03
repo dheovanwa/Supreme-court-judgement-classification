@@ -6,7 +6,6 @@ nltk
 openai
 dotenv
 logging
-os
 time
 re
 imblearn
