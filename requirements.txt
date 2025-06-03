@@ -5,5 +5,4 @@ beautifulsoup4
 nltk
 openai
 imblearn
-sklearn
 joblib
