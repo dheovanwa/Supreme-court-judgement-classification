@@ -65,6 +65,14 @@ The project succesfully developed a Machine Learning model to predict the Judgem
    We use RandomOverSampler oversampling technique. This involves generating synthetic samples for the minority class to balance the dataset, which helps prevent the model from becoming biased towards the majority class.
 8. Dimensionality Reduction <br>
    To manage the complexity and improve efficiency, especially if our feature vectors are very large, we apply dimensionality reduction technique. This process reduces the number of features while trying to preserve as much of the important information as possible.
+
+## Feature Selection
+We select specific columns from the DataFrame that are relevant for the classification model. This helps us focus our analysis and prepare the data for subsequent preprocessing and modeling.
+The selected columns are:
+- ```facts```, The textual description of the case facts.
+- ```issue_area```, The categorical classification of the legal issue involved.
+- ```first_party_winner```, The column that represents the outcome we are trying to predict. It indicates whether the first party involved in the case won (```True```) or lost (```False```). This is the label
+that our classification model will leartn to predict based on the input features.
 ## Exploratory Data Analysis (EDA)
 To understand the distribution of the target variable (```first_party_winner```), bar plot is used to visualize the distribution of the data, we grouped the data by (```first_party_winner```) and calculated the size of each group. 
 ![image](https://github.com/user-attachments/assets/7d20115c-7151-4115-ba77-79584237fa59)
