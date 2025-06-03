@@ -3,14 +3,26 @@ import joblib
 import os
 import time
 import pandas as pd
-from wordcloud import WordCloud
+# from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import logging
+from bs4 import BeautifulSoup
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv() 
 
-MODEL_PATH = './knn_model.joblib'
+logger = logging.getLogger(__name__)
+
+
+MODEL_PATH = './knn_full_pipeline_svd_combined.joblib'
 
 LABEL_MAP = {
-    0: "NOT GUILTY",
-    1: "GUILTY"
+    True: "First Party Win",
+    False: "Second Party Win"
 }
 
 ISSUE_AREA_OPTIONS = [
@@ -40,7 +52,6 @@ def load_nlp_model(path):
         with st.spinner("Loading NLP model from .joblib..."):
             time.sleep(1)
             model = joblib.load(path)
-        st.success("Model loaded successfully!")
         return model
     except Exception as e:
         st.error(f"Failed to load the model. Ensure the .joblib file is valid and correct. Error: {e}")
@@ -140,6 +151,85 @@ def create_dummy_data_frame():
 
     return pd.DataFrame(data)
 
+def processed_facts(facts):
+    if not facts:
+        return ""
+    
+    facts = facts.lower()
+    
+    facts = BeautifulSoup(facts, "html.parser").get_text()
+    facts = re.sub(r'\s+', ' ', facts)
+    facts = re.sub(r'[^\w\s]', '', facts) 
+
+    nltk.download('punkt_tab')
+    nltk.download('stopwords')
+    nltk.download('wordnet')
+    
+    fact_tokenized = nltk.word_tokenize(facts)
+
+    lemmatizer = WordNetLemmatizer()
+
+    words = fact_tokenized
+    words = [lemmatizer.lemmatize(word) for word in words if word not in set(stopwords.words('english'))]
+    fact_lemmatized = ' '.join(words)
+
+    return fact_lemmatized
+
+def summarize_results(facts, issue_area, prediction, first_party, second_party):
+    prompt = f"""
+        Analyze the following legal case scenario:
+
+        Case Facts:
+        '{facts}'
+
+        Issue Area:
+        '{issue_area}'
+
+        First Party:
+        '{first_party}'
+
+        Second Party:
+        '{second_party}'
+
+        Predicted Outcome for the First Party:
+        '{'Win' if prediction else 'Lose'}'
+
+        Task:
+        Based *only* on the information provided above (Case Facts, Issue Area, and Predicted Outcome), please provide a brief summary outlining 2-3 potential key factors or lines of reasoning that could support the predicted outcome. Focus on aspects within the case facts or the nature of the issue area that might logically lead to this prediction. Don't incorporate the first party or second party into the reason leadin to this prediction, but you may state their name on the summary.
+
+        Please structure your response as follows:
+        Potential supporting factors for the prediction that the '[Restate Predicted Outcome for the First Party, e.g., First Party Wins]':
+        1. [Factor 1]
+        2. [Factor 2]
+        3. [Factor 3 (optional)]
+
+
+        Important Considerations for your analysis:
+        - Your explanation should be based on logical inference from the provided text.
+        - Do not introduce external knowledge or legal precedents not mentioned in the provided facts.
+        - Use cautious and analytical language (e.g., 'might suggest,' 'could be due to,' 'a possible factor is').
+        - The goal is to identify potential reasoning within the given context, not to provide definitive legal advice or a comprehensive case analysis.
+    """
+
+    logger.error(f"\niya")
+    client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("API_KEY")
+
+    )
+
+    completion = client.chat.completions.create(
+    model="meta-llama/llama-3.3-8b-instruct:free",
+    messages=[
+        {
+        "role": "user",
+        "content": prompt
+        }
+    ]
+    )
+    return completion.choices[0].message.content
+
+
 dummy_cases_df = create_dummy_data_frame()
 
 
@@ -181,7 +271,6 @@ issue_area_input = st.selectbox(
 
 facts_input = st.text_area(
     "Case Facts:",
-    value=DEFAULT_DUMMY_CASE['facts'],
     placeholder="Example: An anonymous report indicated suspicious activity at location X at Y. Three people were seen quickly leaving the area.",
     height=150,
     key="facts_text_input"
@@ -200,10 +289,10 @@ if st.button("Classify"):
 
     with st.spinner("Analyzing text..."):
         try:
-            processed_first_party = f"first party: {first_party_input}" if first_party_input else ""
-            processed_second_party = f"second party: {second_party_input}" if second_party_input else ""
-            processed_facts_input = f"facts: {facts_input}" if facts_input else ""
-            processed_issue_area_input = f"issue area: {issue_area_input}" if issue_area_input and issue_area_input != "nan (Unknown)" else ""
+            processed_first_party = f"{first_party_input}" if first_party_input else ""
+            processed_second_party = f"{second_party_input}" if second_party_input else ""
+            processed_facts_input = f"{facts_input}" if facts_input else ""
+            processed_issue_area_input = f"{issue_area_input}" if issue_area_input and issue_area_input != "nan (Unknown)" else ""
 
             combined_text_for_model = " ".join(filter(None, [
                 processed_first_party,
@@ -212,16 +301,21 @@ if st.button("Classify"):
                 processed_facts_input
             ]))
 
+            data_to_be_predicted = pd.DataFrame({
+                'tokenized_facts': [processed_facts(processed_facts_input)],
+                'issue_area': [processed_issue_area_input]
+            })
+
             if not combined_text_for_model.strip():
                 st.warning("Combined input is empty. Please provide enough information for analysis.")
                 st.stop()
 
-            prediction_raw = nlp_model.predict([combined_text_for_model])
-            predicted_class = prediction_raw[0]
+            predicted_class = nlp_model.predict(data_to_be_predicted)[0]
+            # predicted_class = prediction_raw[0]
 
             confidence_score = None
             if hasattr(nlp_model, 'predict_proba'):
-                prediction_proba = nlp_model.predict_proba([combined_text_for_model])
+                prediction_proba = nlp_model.predict_proba(data_to_be_predicted)
                 confidence_score = prediction_proba[0][1]
 
             predicted_label = LABEL_MAP.get(predicted_class, "Unknown Label")
@@ -247,21 +341,24 @@ if st.button("Classify"):
 
 
             st.subheader("Reason for Model's Prediction:")
-            explanation_message, top_features_df = get_feature_importance_explanation(nlp_model, predicted_class)
-
-
-
-            if top_features_df is None:
-                st.info(explanation_message)
-            else:
-                st.write(explanation_message)
-                st.dataframe(top_features_df.style.format({'coefficient': "{:.4f}"}))
-                st.caption("Note: Positive coefficients indicate support for the 'GUILTY' class, while negative coefficients indicate support for the 'NOT GUILTY' class.")
-
+            # explanation_message, top_features_df = get_feature_importance_explanation(nlp_model, predicted_class)
+            st.markdown(summarize_results(processed_facts_input, processed_issue_area_input, predicted_class, processed_first_party, processed_second_party))
 
             st.markdown("---")
-            st.markdown("### Combined Input Used by Model")
-            st.code(combined_text_for_model)
+            st.markdown("### Summary")
+            st.markdown(f"""
+                First party: {processed_first_party}
+                
+                Second party: {processed_second_party}
+                
+                Issue area: {processed_issue_area_input}
+                
+                Facts:
+
+                {processed_facts_input}
+
+                Winner predicted: {predicted_label}
+                """)
             st.markdown("---")
             st.write("Note: This classification is the result of an AI model and should be used as an assistive tool, not as a substitute for professional legal judgment.")
 
