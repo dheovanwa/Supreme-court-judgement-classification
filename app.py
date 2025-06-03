@@ -214,7 +214,7 @@ def summarize_results(facts, issue_area, prediction, first_party, second_party):
     logger.error(f"\niya")
     client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("API_KEY")
+    api_key=st.secrets["API_KEY"]
 
     )
 
