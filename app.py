@@ -4,7 +4,6 @@ import os
 import time
 import pandas as pd
 # from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import logging
 from bs4 import BeautifulSoup
 import re
@@ -12,8 +11,6 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from openai import OpenAI
-from dotenv import load_dotenv
-load_dotenv() 
 
 logger = logging.getLogger(__name__)
 

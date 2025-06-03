@@ -5,3 +5,7 @@ beautifulsoup4
 nltk
 openai
 dotenv
+logging
+os
+time
+re
