@@ -66,5 +66,7 @@ The project succesfully developed a Machine Learning model to predict the Judgem
 8. Dimensionality Reduction <br>
    To manage the complexity and improve efficiency, especially if our feature vectors are very large, we apply dimensionality reduction technique. This process reduces the number of features while trying to preserve as much of the important information as possible.
 ## Exploratory Data Analysis (EDA)
-To understand the distribution of the target variable (```first_party_winner```), bar plot is used to visualize the distribution of the data, we grouped the data by (```first_party_winner```) and calculated the size of each group. This was then visualized using a bar 
-plot for easy comparison. This plot helps us understand the distribution in the target variable, which is important for model training.
+To understand the distribution of the target variable (```first_party_winner```), bar plot is used to visualize the distribution of the data, we grouped the data by (```first_party_winner```) and calculated the size of each group. 
+![image](https://github.com/user-attachments/assets/7d20115c-7151-4115-ba77-79584237fa59)
+
+This was then visualized using a bar plot for easy comparison. This plot helps us understand the distribution in the target variable, which is important for model training.
