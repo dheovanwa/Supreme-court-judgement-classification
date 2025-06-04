@@ -109,47 +109,6 @@ st.write("""
   This model combines issue area, and factual description, then vectorizes the text using NLP techniques to classify who won <span style='color: blue;'>"**First Party**"</span> or <span style='color: blue;'>"**Second Party**"</span> based on the text case you provide.
 """, unsafe_allow_html=True)
 
-def create_dummy_data_frame():
-    data = {
-        "first_party": [
-            "United States",
-            "Miranda",
-            "Brown",
-            "Roe",
-            "Tinker",
-            "New York Times Co."
-        ],
-        "second_party": [
-            "Miller",
-            "Arizona",
-            "Board of Education",
-            "Wade",
-            "Des Moines Independent Community School District",
-            "Sullivan"
-        ],
-        "issue_area": [
-            "Criminal Procedure",
-            "Due Process",
-            "Civil Rights",
-            "Privacy",
-            "First Amendment",
-            "First Amendment"
-        ],
-        "facts": [
-            "The case concerned the constitutionality of the National Firearms Act of 1934, specifically its provisions related to sawed-off shotguns. The defendants argued that the act violated their Second Amendment rights.",
-            "Ernesto Miranda was arrested for kidnapping and rape. He confessed after interrogation but was not informed of his right to an attorney or to remain silent.",
-            "Segregation of students in public schools violates the Equal Protection Clause of the Fourteenth Amendment, even if the segregated schools are otherwise equal in quality.",
-            "A pregnant single woman challenged a Texas law that prohibited abortions, arguing that it violated her constitutional right to privacy.",
-            "Students wore black armbands to protest the Vietnam War and were suspended. They argued their First Amendment right to freedom of speech.",
-            "An advertisement was published in The New York Times soliciting funds for the civil rights movement, containing minor factual inaccuracies regarding an Alabama city commissioner, L.B. Sullivan. Sullivan sued for libel."
-        ]
-    }
-    lengths = {key: len(value) for key, value in data.items()}
-    if len(set(lengths.values())) > 1:
-        raise ValueError(f"All arrays in 'data' must be of the same length. Current lengths: {lengths}")
-
-    return pd.DataFrame(data)
-
 def processed_facts(facts):
     if not facts:
         return ""
@@ -229,14 +188,9 @@ def summarize_results(facts, issue_area, prediction, first_party, second_party):
     return completion.choices[0].message.content
 
 
-dummy_cases_df = create_dummy_data_frame()
-
-
-
-DEFAULT_DUMMY_CASE = dummy_cases_df.iloc[0]
 
 try:
-    default_issue_area_index = ISSUE_AREA_OPTIONS.index(DEFAULT_DUMMY_CASE['issue_area'])
+    default_issue_area_index = ISSUE_AREA_OPTIONS.index("nan (unknown)")
 except ValueError:
     default_issue_area_index = 0
 
@@ -247,16 +201,14 @@ col1, col2 = st.columns(2)
 with col1:
     first_party_input = st.text_input(
         label="First party",
-            value=DEFAULT_DUMMY_CASE['first_party'],
-            placeholder="e.g., Furina, John Doe",
+            placeholder="Example: John Doe",
             key="first_party_text_input",
             label_visibility="visible"
     )
 with col2:
     second_party_input = st.text_input(
         "Second Party:",
-        value=DEFAULT_DUMMY_CASE['second_party'],
-        placeholder="Example: Jeremy",
+        placeholder="Example: United States",
         key="second_party_text_input"
     )
 
