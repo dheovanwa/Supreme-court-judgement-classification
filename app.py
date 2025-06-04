@@ -101,10 +101,11 @@ This tool predicts Supreme Court judgment outcomes based on textual case facts u
 
 -  **Model**: KNN Classifier
 -  **File**: `knn_model.joblib`
+-  **Source**: (Github Repository)[https://github.com/dheovanwa/Supreme-court-judgement-classification]
 """)
 
 st.write("""
-  This model combines party names, issue area, and factual description, then vectorizes the text using NLP techniques to classify whether a situation indicates <span style='color: red;'>"**GUILTY**"</span> or <span style='color: green;'>"**NOT GUILTY**"</span> based on the text case you provide.
+  This model combines issue area, and factual description, then vectorizes the text using NLP techniques to classify who won <span style='color: blue;'>"**First Party**"</span> or <span style='color: blue;'>"**NOT Second Party**"</span> based on the text case you provide.
 """, unsafe_allow_html=True)
 
 def create_dummy_data_frame():
@@ -244,10 +245,9 @@ st.header("Case Information")
 col1, col2 = st.columns(2)
 with col1:
     first_party_input = st.text_input(
-        label="Primary party",
+        label="First party",
             value=DEFAULT_DUMMY_CASE['first_party'],
             placeholder="e.g., Furina, John Doe",
-            help="The primary party involved in the case.",
             key="first_party_text_input",
             label_visibility="visible"
     )
@@ -340,24 +340,6 @@ if st.button("Classify"):
             st.subheader("Reason for Model's Prediction:")
             # explanation_message, top_features_df = get_feature_importance_explanation(nlp_model, predicted_class)
             st.markdown(summarize_results(processed_facts_input, processed_issue_area_input, predicted_class, processed_first_party, processed_second_party))
-
-            st.markdown("---")
-            st.markdown("### Summary")
-            st.markdown(f"""
-                First party: {processed_first_party}
-                
-                Second party: {processed_second_party}
-                
-                Issue area: {processed_issue_area_input}
-                
-                Facts:
-
-                {processed_facts_input}
-
-                Winner predicted: {predicted_label}
-                """)
-            st.markdown("---")
-            st.write("Note: This classification is the result of an AI model and should be used as an assistive tool, not as a substitute for professional legal judgment.")
 
         except Exception as e:
             st.error(f"An error occurred during prediction. Error: {e}")
