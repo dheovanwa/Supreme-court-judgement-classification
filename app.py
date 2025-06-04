@@ -15,7 +15,7 @@ from openai import OpenAI
 logger = logging.getLogger(__name__)
 
 
-MODEL_PATH = './knn_model.joblib' 
+MODEL_PATH = './naive_bayes.joblib' 
 
 LABEL_MAP = {
     True: "First Party Win",
@@ -68,9 +68,6 @@ def get_feature_importance_explanation(pipeline, predicted_class, top_n=10):
                 classifier_is_linear = True
             break
 
-    if not classifier_is_linear or vectorizer is None:
-        return "The model does not support coefficient-based explanations (it's not a linear model/KNN). Consider LIME/SHAP for more complex explanations or use other interpretations for non-linear/KNN models.", None
-
     feature_names = vectorizer.get_feature_names_out()
     coef = classifier.coef_
     if coef.ndim > 1:
@@ -99,8 +96,8 @@ st.sidebar.info("On average, the Supreme Court receives about 7,000 petitions fo
 st.sidebar.markdown("""
 This tool predicts Supreme Court judgment outcomes based on textual case facts using an NLP model.
 
--  **Model**: KNN Classifier
--  **File**: `knn_model.joblib`
+-  **Model**: Gaussian Naive Bayes
+-  **File**: `naive_bayes.joblib`
 -  **Source**: [Github Repository](https://github.com/dheovanwa/Supreme-court-judgement-classification)
 -  **Prediction reasoning**: meta-llama/llama-3.3-8b
 """)
