@@ -275,11 +275,11 @@ if st.button("Classify"):
             st.markdown("---")
 
             st.subheader("Case Classification:")
-            if predicted_label == "GUILTY":
+            if predicted_label == "First Party Win":
                 st.error(f"**{predicted_label}**")
                 if confidence_score is not None:
                     st.write(f"Model Confidence (GUILTY): **{confidence_score:.2%}**")
-            elif predicted_label == "NOT GUILTY":
+            elif predicted_label == "Second Party Win":
                 st.success(f"**{predicted_label}**")
                 if confidence_score is not None:
                     st.write(f"Model Confidence (NOT GUILTY): **{1 - confidence_score:.2%}**")
