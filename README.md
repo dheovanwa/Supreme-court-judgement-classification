@@ -44,7 +44,7 @@ pip install -r requirements.txt
 # Run the Streamlit app
 streamlit run app.py
 ```
-You can also access the deployed Streamlit application here: [Supreme Court Judgment Prediction](https://github.com/dheovanwa/Supreme-court-judgement-classification/blob/d0f4191e77630b5de487b2bb3e1fc56705edd50b/app.py)
+You can also access the deployed Streamlit application here: [Supreme Court Judgment Prediction](https://supreme-court-judgement-classification.streamlit.app/)
 
 ### Conclusion
 The project succesfully developed a Machine Learning model to predict the Judgement of the Supreme Court with a quite reasonable accuracy.
@@ -65,8 +65,20 @@ The project succesfully developed a Machine Learning model to predict the Judgem
    We use RandomOverSampler oversampling technique. This involves generating synthetic samples for the minority class to balance the dataset, which helps prevent the model from becoming biased towards the majority class.
 8. Dimensionality Reduction <br>
    To manage the complexity and improve efficiency, especially if our feature vectors are very large, we apply dimensionality reduction technique. This process reduces the number of features while trying to preserve as much of the important information as possible.
+
+## Feature Selection
+We select specific columns from the DataFrame that are relevant for the classification model. This helps us focus our analysis and prepare the data for subsequent preprocessing and modeling.
+The selected columns are:
+- ```facts```, The textual description of the case facts.
+- ```issue_area```, The categorical classification of the legal issue involved.
+- ```first_party_winner```, The column that represents the outcome we are trying to predict. It indicates whether the first party involved in the case won (```True```) or lost (```False```). This is the label
+that our classification model will leartn to predict based on the input features.
 ## Exploratory Data Analysis (EDA)
 To understand the distribution of the target variable (```first_party_winner```), bar plot is used to visualize the distribution of the data, we grouped the data by (```first_party_winner```) and calculated the size of each group. 
 ![image](https://github.com/user-attachments/assets/7d20115c-7151-4115-ba77-79584237fa59)
 
 This was then visualized using a bar plot for easy comparison. This plot helps us understand the distribution in the target variable, which is important for model training.
+The bar for ```True``` is significantly longer, indicating a much higher number of cases. On the other hand, the bar for ```False``` is notably shorter, indicating a lower number of cases.
+Implication of this distribution:
+- Imbalanced Dataset, the most apparent observation is the significant class imbalance. The number of cases where ```first_party_winner``` is ```True``` is nearly double that of cases where ```first_party_winner``` is ```False```
+- Potential Issues for the Machine Learning model, this class imbalance is a critical factor to consider in machine Learning. If left unaddressed, the classification model might become biased towards predicting the majority class (```True```) because the model will "learn" that predicting ```True``` more often leads to higher overall accuracy, even if it means neglecting or misclassifyng the minority class (```False```)
