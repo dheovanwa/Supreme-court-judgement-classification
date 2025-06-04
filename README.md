@@ -120,35 +120,21 @@ We compared various models for the classification task and the results of each m
 
 |       Model Name        | Accuracy | Precision | Recall  |
 |-------------------------|----------|-----------|---------|
-| Logistic Regression     | 56.38%   | **66.99%**| 64.95%  |
-| KNN                     | 63.37%   | 65.98%    | 90.19%  |
-| Support Vector Classifier| **63.68%**| 65.27%    | 94.39%  |
-| Gaussian Naive Bayes    | 63.22%   | 64.72%    | **95.56%**|
-| Decision Tree Classifier| 58.97%   | 66.12%    | 75.7%   |
-| Random Forest Classifier| 62.92%   | 64.84%    | 93.93%  |
+| Logistic Regression     | 59.27%   | **70.62%**| 64.02%  |
+| KNN                     | 54.56%   | 65.39%    | 64.02%  |
+| Support Vector Classifier| 59.42%   | 67.77%    | 71.73%  |
+| Gaussian Naive Bayes    | **63.22%**| 69.21%    | **78.27%**|
+| Decision Tree Classifier| 52.58%   | 63.81%    | 62.62%  |
+| Random Forest Classifier| 59.27%   | 66.06%    | 76.87%  |
 
-As can be seen from the table above, the model with the best average metrics is Support Vector Classifier, but when we delve deeper into the results by seeing the prediction results of each label class.
+As can be seen from the table above, the model with the best average metrics is Gaussian Naive Bayes with the prediction results of each label class seen below.
 ```
               precision    recall  f1-score   support
 
-       False       0.38      0.07      0.11       230
-        True       0.65      0.94      0.77       428
-
-    accuracy                           0.64       658
-   macro avg       0.52      0.50      0.44       658
-weighted avg       0.56      0.64      0.54       658
-```
-We can see the Support Vector Classifier perform poorly for the `False` class that will result in bias. In which case, the most unbiased model we encouter was KNN classifier which the results can be seen below.
-```
-              precision    recall  f1-score   support
-
-       False       0.42      0.13      0.20       230
-        True       0.66      0.90      0.76       428
+       False       0.47      0.35      0.40       230
+        True       0.69      0.78      0.73       428
 
     accuracy                           0.63       658
-   macro avg       0.54      0.52      0.48       658
-weighted avg       0.58      0.63      0.57       658
-
+   macro avg       0.58      0.57      0.57       658
+weighted avg       0.61      0.63      0.62       658
 ```
-As we can see, the KNN perform better than Support Vector Classifier by balancing the bias for both class. 
-
