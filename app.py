@@ -95,17 +95,18 @@ st.title("Supreme Court Judgment Prediction")
 st.markdown("---")
 
 st.sidebar.header("ℹ️ About")
-st.sidebar.info("Over 60% of Supreme Court cases relate to criminal procedure and civil rights.")
+st.sidebar.info("On average, the Supreme Court receives about 7,000 petitions for writs of certiorari each year, but only grants about 80.")
 st.sidebar.markdown("""
 This tool predicts Supreme Court judgment outcomes based on textual case facts using an NLP model.
 
 -  **Model**: KNN Classifier
 -  **File**: `knn_model.joblib`
--  **Source**: (Github Repository)[https://github.com/dheovanwa/Supreme-court-judgement-classification]
+-  **Source**: [Github Repository](https://github.com/dheovanwa/Supreme-court-judgement-classification)
+-  **Prediction reasoning**: meta-llama/llama-3.3-8b
 """)
 
 st.write("""
-  This model combines issue area, and factual description, then vectorizes the text using NLP techniques to classify who won <span style='color: blue;'>"**First Party**"</span> or <span style='color: blue;'>"**NOT Second Party**"</span> based on the text case you provide.
+  This model combines issue area, and factual description, then vectorizes the text using NLP techniques to classify who won <span style='color: blue;'>"**First Party**"</span> or <span style='color: blue;'>"**Second Party**"</span> based on the text case you provide.
 """, unsafe_allow_html=True)
 
 def create_dummy_data_frame():
