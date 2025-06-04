@@ -106,17 +106,15 @@ The plot clearly shows that 'Criminal Procedure' is the most dominant issue area
    The initial step where raw text is converted into smaller, meaningful units called tokens (typically words, punctuation, or numbers). This process breaks down continuous text into discrete elements, making it understandable and processable for further analysis.
 5. Lemmatization <br>
    Applied lemmatization to reduce words to their base or dictionary form. For example, "running", "ran", and "runs" are all reduces to "run". This helps standardize words and improves the model's understanding of semantic similarity.
-6. Removal of Extraneous Characters
-  Prior to generating the word cloud and other text-based features, the raw text data underwent a cleaning process. This involved the explicit removal of various extraneous or anomalous characters, such as isolated single letters like 'p' and 'n', as well as apostrophes ('). This crucial step ensures that our analyses and visualizations, including the word cloud, are not skewed by irrelevant artifacts and instead accurately represent the meaningful terms within the dataset.
-7. Splitting dataset into train and test set <br>
+6. Splitting dataset into train and test set <br>
     We splitted the dataset into train and test set with 80% went into train set and the rest of 20% went into test set. We also stratified the label class to ensure the proportion are the same for every split. 
-8. Word Embedding <br>
+7. Word Embedding <br>
    We used TF-IDF because it considered word importance in a text. Computationally, TF-IDF is generally faster and requires fewer resources than training complex neural network-based embeddings. This makes it effective for information retrieval, text summarization, and keyword extraction tasks. Furthermore, TF-IDF does not require massive training datasets like deep learning embeddings to produce useful word representations for certain tasks and treats each word independently.
-9. One Hot Encoding <br>
+8. One Hot Encoding <br>
    For categorical features like "Issue Area" as an alternative representation for words in some scenario. This converts categorical values into a binary vector, where each unique category becomes a distinct column.
-10. Oversampling <br>
+9. Oversampling <br>
    Given the imbalance in the `first_party_winner` distribution, we address this by oversampling the minority class using SMOTE (Synthetic Minority Over-sampling Technique). SMOTE synthesizes new samples for the minority class (`False`) to balance the dataset, ensuring our model learns effectively from both outcomes and improves its classification performance.
-11. Dimensionality Reduction <br>
+10. Dimensionality Reduction <br>
    To manage the complexity and improve efficiency, especially if our feature vectors are very large, we apply dimensionality reduction technique. This process reduces the number of features while trying to preserve as much of the important information as possible. We used truncatedSVD because it works greatly on sparse matrix which resulted by TF-IDF.
 
 ## Modelling and Evaluation
