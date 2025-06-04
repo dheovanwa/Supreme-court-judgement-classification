@@ -15,7 +15,7 @@ from openai import OpenAI
 logger = logging.getLogger(__name__)
 
 
-MODEL_PATH = './knn_full_pipeline_svd_combined.joblib'
+MODEL_PATH = './knn_model.joblib'
 
 LABEL_MAP = {
     True: "First Party Win",
