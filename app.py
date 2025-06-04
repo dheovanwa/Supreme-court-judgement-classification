@@ -187,7 +187,11 @@ def summarize_results(facts, issue_area, prediction, first_party, second_party):
     )
     return completion.choices[0].message.content
 
-
+if st.button("Clear Inputs"):
+    st.session_state.first_party_text_input = ""
+    st.session_state.second_party_text_input = ""
+    st.session_state.issue_area_selectbox = ISSUE_AREA_OPTIONS[0]
+    st.session_state.facts_text_input = ""
 
 try:
     default_issue_area_index = ISSUE_AREA_OPTIONS.index("nan (unknown)")
@@ -299,15 +303,6 @@ if st.button("Classify"):
             st.write("Ensure the input combination format matches your model's expectation and the model file is valid.")
             st.write(f"Error details: {e}")
 
-
-clear_clicked = st.button("Clear Input Fields")
-
-if clear_clicked:
-    st.info("masi kosong")
-    # st.session_state['first_party_text_input'] = ""
-    # st.session_state['second_party_text_input'] = ""
-    # st.session_state['issue_area_selectbox'] = 0
-    # st.session_state['facts_text_input'] = ""
   
 st.markdown("""
     <style>
