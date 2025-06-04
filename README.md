@@ -30,9 +30,14 @@ streamlit run app.py
 In order to run the Machine Learning prototype, you must follow these steps carefully:
 1. Clone this repository
 2. Install the required dependencies using ```pip install -r requirements.txt ```
-3. Run the Streamlit app using ```streamlit run app.py```
-4. The app will allow you to input the First Party, Second Party, Issue Area, and Case Facts
-5. Press the "Classify" button to get the result of what you inputted
+3. Fetch your own api key from openrouter and then make a folder named .streamlit
+4. Create file named secrets.toml inside of .streamlit and paste the api key into a variable below
+```
+API_KEY = <YOUR API KEY>
+```
+5. Run the Streamlit app using ```streamlit run app.py```
+6. The app will allow you to input the First Party, Second Party, Issue Area, and Case Facts
+7. Press the "Classify" button to get the result of what you inputted
 
 ```
 # Clone the repository
