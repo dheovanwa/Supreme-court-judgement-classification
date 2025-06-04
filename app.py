@@ -278,11 +278,11 @@ if st.button("Classify"):
             if predicted_label == "First Party Win":
                 st.error(f"**{predicted_label}**")
                 if confidence_score is not None:
-                    st.write(f"Model Confidence (GUILTY): **{confidence_score:.2%}**")
+                    st.write(f"Model Confidence: **{confidence_score:.2%}**")
             elif predicted_label == "Second Party Win":
                 st.success(f"**{predicted_label}**")
                 if confidence_score is not None:
-                    st.write(f"Model Confidence (NOT GUILTY): **{1 - confidence_score:.2%}**")
+                    st.write(f"Model Confidence: **{1 - confidence_score:.2%}**")
             else:
                 st.info(f"**{predicted_label}**")
                 if confidence_score is not None:
