@@ -324,6 +324,6 @@ st.markdown("""
     </style>
 
     <div class="footer">
-        © 2025 SupremeCourt AI Tool
+        © 2025 Supreme Court Judgement Classification
     </div>
 """, unsafe_allow_html=True)
