@@ -41,7 +41,7 @@ API_KEY = <YOUR API KEY>
 
 ```
 # Clone the repository
-git clone <the-repository-url>
+git clone https://github.com/dheovanwa/Supreme-court-judgement-classification
 
 # Install the necessary packages
 pip install -r requirements.txt
