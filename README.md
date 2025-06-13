@@ -14,18 +14,6 @@ This project focuses on the following areas:
 - Evaluation and comparison of multiple Machine Learning classifiers (e.g., Logistic Regression, KNN, Random Forest) using metrics such as accuracy, precision, and recall.
 - Deployment interface using Streamlit.
 
-### Preparation
-Data source: [U.S. Supreme Court Decisions Dataset](https://github.com/dheovanwa/Supreme-court-judgement-classification/blob/f2008480d343bbc4bc882f5cdc125306919f8111/justice.csv)
-- Key columns used: facts, issue_area, and first_party_winner.
-Environtment Setup:
-```
-# To install packages that are necessary for the model to run
-pip install -r requirements.txt
-
-# To run the model via streamlit
-streamlit run app.py
-```
-
 ### Running the Machine Learning System
 In order to run the Machine Learning prototype, you must follow these steps carefully:
 1. Clone this repository
